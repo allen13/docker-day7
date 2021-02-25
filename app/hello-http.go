@@ -35,11 +35,17 @@ var (
 		})
 )
 
+func randomMilliWait() {
+	rand.Seed(time.Now().Unix())
+	time.Sleep(time.Millisecond * time.Duration(rand.Int31n(3000)))
+}
+
 func hello(w http.ResponseWriter, r *http.Request) {
     start := time.Now()
     defer func() {
         histogram.Observe(time.Since(start).Seconds())
     }()
+    randomMilliWait()
     counter.Add(1)
     gauge.Add(rand.Float64()*15 - 5)
 
